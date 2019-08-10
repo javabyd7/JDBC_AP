@@ -1,25 +1,25 @@
 package pl.sda.jdbc;
 
-import java.sql.*;
+import java.util.Scanner;
 
 public class App {
 
     public static void main(String[] args) {
-
-        try (Connection connection = DBConnector.getConnection()) {
-            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM employee_db.employees;");
-            while (resultSet.next()) {
-                System.out.println(resultSet.getInt("employeeNumber") + " "
-                        + resultSet.getString("lastName") + " "
-                        + resultSet.getString("firstName") + " "
-                        + resultSet.getString("extension") + " "
-                        + resultSet.getString("email") + " "
-                        + resultSet.getInt("officeCode") + " "
-                        + resultSet.getInt("reportsTo") + " "
-                        + resultSet.getString("jobTitle"));
+        EmployeeService employeeService = new EmployeeService();
+        boolean exit = true;
+        while (exit) {
+            System.out.println("1. dodaj pracownika\n2. wyświetl wszystkich\n3. exit");
+            int input = new Scanner(System.in).nextInt();
+            switch (input) {
+                case 1:
+                    employeeService.addEmployee();
+                    break;
+                case 2:
+                    employeeService.printAllEmployees();
+                    break;
+                case 3:
+                    exit = false;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }
